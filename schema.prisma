@@ -128,6 +128,8 @@ model FiscalYears {
   fiscalYear          String
   dataInicial         DateTime
   dataFinal           DateTime
+  comentarios         String
+  status              Boolean @default(false)
 
   clientes            Clientes[]
   propostas           Propostas[]
