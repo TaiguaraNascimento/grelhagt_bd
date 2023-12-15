@@ -131,6 +131,9 @@ model FiscalYears {
   comentarios         String
   status              Boolean @default(false)
 
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
   clientes            Clientes[]
   propostas           Propostas[]
 }
