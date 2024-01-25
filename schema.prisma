@@ -34,17 +34,47 @@ model Industrias {
   clientes            Clientes[]
 }
 
+
+
+// CRUD DE PROJETOS: Classificação de projetos
+
+// Classificação    Natureza        Divisão
+// Lei do bem       IRPJ/CSLL       Diretos         
+
+
+// É a classificação imediata dos projetos
+model Classificacao {
+  id                        String @id @map("_id") @default(auto()) @db.ObjectId
+  classificacao             String
+
+  natureza                  Natureza? @relation(fields: [naturezaId], references: [id])
+  naturezaId                String? @db.ObjectId
+
+  propostas                 Propostas[]
+}
+
+model Natureza {
+  id                        String @id @map("_id") @default(auto()) @db.ObjectId
+  natureza                  String
+
+  divisoes                  Divisoes? @relation(fields: [divisoesId], references: [id])
+  divisoesId                String? @db.ObjectId
+
+  classificacao             Classificacao[]
+}
+
 model Divisoes {
   id                        String @id @map("_id") @default(auto()) @db.ObjectId
   divisoes                  String
+
+  natureza                  Natureza[]
+
   staff                     Staff[]
 }
 
 
 
-
-
-
+// Atualização desse arquivo
 
 // CRUD Propostas e Clientes
 
@@ -95,8 +125,8 @@ model Propostas {
   taxaMedia                   Float                         @default(0.0)
   valorTotal                  Float                         @default(0.0)              
   
-  classificacoes               ClassificacoesDeProjetos?    @relation(fields: [classificacoesId], references: [id])
-  classificacoesId             String?                      @db.ObjectId
+  classificacao               Classificacao?                @relation(fields: [classificacaoId], references: [id])
+  classificacaoId             String?                       @db.ObjectId
   
   origemDeProjetos            OrigensDeProjetos?            @relation(fields: [origemDeProjetosId], references: [id])
   origemDeProjetosId          String?                       @db.ObjectId
@@ -128,11 +158,11 @@ model FiscalYears {
   fiscalYear          String
   dataInicial         DateTime
   dataFinal           DateTime
-  comentarios         String
+  comentarios         String?
   status              Boolean @default(false)
 
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
 
   clientes            Clientes[]
   propostas           Propostas[]
@@ -238,34 +268,6 @@ model Staff {
   programacao               Programacao[]
 }
 
-
-
-
-
-// CRUD DE PROJETOS
-
-model ClassesPrimariasProjetos {
-  id                String      @id @map("_id") @default(auto()) @db.ObjectId
-  classePrimaria    String
-  classeSecundaria  ClassesSecundariasProjetos[]
-}
-
-model ClassesSecundariasProjetos {
-  id                  String      @id @map("_id") @default(auto()) @db.ObjectId
-  classeSecundaria    String
-  classePrimaria      ClassesPrimariasProjetos @relation(fields: [classePrimariaId], references: [id])
-  classePrimariaId    String @db.ObjectId
-  ClassificacoesDeProjetos ClassificacoesDeProjetos[]
-
-}
-
-model ClassificacoesDeProjetos {
-  id                  String      @id @map("_id") @default(auto()) @db.ObjectId
-  classeSecundaria    ClassesSecundariasProjetos @relation(fields: [classeSecundariaId], references: [id])
-  classeSecundariaId  String @db.ObjectId
-  propostas           Propostas[]
-}
-
-
 // npx prisma db push                                                                  
 // Teste
+   
