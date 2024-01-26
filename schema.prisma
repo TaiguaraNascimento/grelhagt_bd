@@ -22,7 +22,7 @@ model Usuarios {
 model Users {
   id                      String      @id @map("_id") @default(auto()) @db.ObjectId
   usuario                 String
-  email                   String
+  email                   String      @unique
   senha                   String
 
   status                  Boolean
@@ -255,7 +255,7 @@ model Profissionais {
   id                        String      @id @map("_id") @default(auto()) @db.ObjectId
   nomeDoProfissional        String
   dataDeNascimento          DateTime?
-  email                     String?
+  email                     String?     @unique
   dataDeEntrada             DateTime?
   dataDeDesligamento        DateTime?
   comentarios               String?
