@@ -19,6 +19,23 @@ model Usuarios {
 }
 
 
+model Users {
+  id                      String      @id @map("_id") @default(auto()) @db.ObjectId
+  usuario                 String
+  email                   String
+  senha                   String
+
+  status                  Boolean
+
+  profissionais           Profissionais           @relation(fields: [profissionaisId], references: [id])
+  profissionaisId         String                  @db.ObjectId
+
+  createdAt               DateTime        @default(now())
+  updatedAt               DateTime        @updatedAt
+  
+}
+
+
 model Filiais {
   id                      String      @id @map("_id") @default(auto()) @db.ObjectId
   nomeDaFilial            String      @unique
@@ -237,13 +254,14 @@ model Cargos {
 model Profissionais {
   id                        String      @id @map("_id") @default(auto()) @db.ObjectId
   nomeDoProfissional        String
-  dataDeNascimento          DateTime
-  email                     String
-  dataDeEntrada             DateTime
-  dataDeDesligamento        DateTime
-  comentarios               String
+  dataDeNascimento          DateTime?
+  email                     String?
+  dataDeEntrada             DateTime?
+  dataDeDesligamento        DateTime?
+  comentarios               String?
   propostas                 Propostas[]
   staff                     Staff[]
+  users                     Users[]
 }
 
 model Staff {
